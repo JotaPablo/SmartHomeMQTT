@@ -75,7 +75,7 @@ void inicializa_lampadas();
 void atualiza_lampadas(MQTT_CLIENT_DATA_T *state, Lampada *lampada, uint16_t lampada_id);
 
 volatile uint16_t ar_condicionado_valor = 25; //Temperatura inicial
-volatile bool ar_condicionado_ligado = 0; // Inicialmente desligado
+volatile bool ar_condicionado_ligado = false; // Inicialmente desligado
 
 #define LIMITE_AR_INF 16
 #define LIMITE_AR_SUP 30
