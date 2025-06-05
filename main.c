@@ -115,6 +115,7 @@ static void gpio_button_handler(uint gpio, uint32_t events) {
     uint64_t current_time = to_ms_since_boot(get_absolute_time());
 
     // Verifica qual botão gerou a interrupção e aplica debounce (200ms)
+    //Se o Ar estiver ligado, decrementa temperatura
     if(gpio == BUTTON_A && current_time - last_time_button_a >= 200){
         last_time_button_a = current_time;
         
@@ -124,6 +125,7 @@ static void gpio_button_handler(uint gpio, uint32_t events) {
         }
 
     }
+    //Se o Ar estiver ligado, incrementa temperatura
     else if(gpio == BUTTON_B && current_time - last_time_button_b >= 200){
         
         last_time_button_b = current_time;
@@ -135,24 +137,13 @@ static void gpio_button_handler(uint gpio, uint32_t events) {
 
 
     }
-
+    //Alterna o estado do Ar
      else if(gpio == BUTTON_JOYSTICK && current_time - last_time_button_joystick >= 200){
         
         last_time_button_joystick = current_time;
 
         ar_condicionado_ligado = !ar_condicionado_ligado;
         flag_atualiza_ar = true;
-        
-        /*
-        printf("\nHABILITANDO O MODO GRAVAÇÃO\n");
-
-        ssd1306_fill(&ssd, false);
-        ssd1306_draw_string(&ssd, "  HABILITANDO", 5, 25);
-        ssd1306_draw_string(&ssd, " MODO GRAVACAO", 5, 38);
-        ssd1306_send_data(&ssd);
-
-        reset_usb_boot(0, 0);
-        */
     }
 }
 
@@ -322,7 +313,7 @@ bool eh_hex_color_valido(const char *str) {
     return true;
 }
 
-// Verifica se a string está no formato de função RGB (ex: "rgb(255,255,0)")
+// Verifica se a string está no formato de função RGB (ex:"rgb(255,255,0)")
 // Retorna true se o formato for reconhecido, false caso contrário.
 bool eh_rgb_func_valido(const char *str) {
     return strncmp(str, "rgb(", 4) == 0 && strchr(str, ')') != NULL;
